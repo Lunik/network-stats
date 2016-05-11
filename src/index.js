@@ -20,7 +20,7 @@ ns('192.168.1.0', '255.255.255.0', function(data){
       }
       file[device.mac].ip[device.ip].push((new Date()).getTime())
     }
-    fs.writeFile(__dirname+'/db.json', JSON.stringify(file), function(err){
+    fs.writeFile(__dirname+'/db.json', JSON.stringify(file, null, 2), function(err){
       if(err) console.log(err)
     })
   })
