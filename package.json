@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "if ! [ -f src/db.json ]; then cp src/db.default src/db.json; fi",
     "start": "node src/index.js",
-    "scrape": "forever node src/NetworkStats.js"
+    "scrape": "forever -a start src/NetworkStats.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,8 @@
   "homepage": "https://github.com/Lunik/network-stats#readme",
   "dependencies": {
     "async": "^2.0.0-rc.4",
+    "compression": "^1.6.1",
+    "express": "^4.13.4",
     "network-calculator": "^1.2.0",
     "node-arp": "^1.0.5"
   }
