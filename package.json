@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "if ! [ -f src/db.json ]; then cp src/db.default src/db.json; fi",
-    "start": "node src/index.js",
+    "start": "forever -a start src/index.js",
     "scrape": "forever -a start src/NetworkStats.js"
   },
   "repository": {
