@@ -2,10 +2,11 @@
   "name": "network-stats",
   "version": "0.0.1",
   "description": "",
-  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "cp src/db.default src/db.json"
+    "install": "cp src/db.default src/db.json",
+    "start": "node src/index.js",
+    "scrape": "forever node src/NetworkStats.js"
   },
   "repository": {
     "type": "git",
