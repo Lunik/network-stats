@@ -32,7 +32,7 @@ app.get('/jquery.js', function(req, res){
 })
 
 app.get('/chart.js', function(req, res){
-  fs.readFile(__dirname+"/../node_modules/chart.js/dist/chart.min.js", function (err, data) {
+  fs.readFile(__dirname+"/../node_modules/chart.js/dist/Chart.min.js", function (err, data) {
     if (err) console.log(err)
 
     res.end(data)
