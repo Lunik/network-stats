@@ -20,8 +20,10 @@
   "homepage": "https://github.com/Lunik/network-stats#readme",
   "dependencies": {
     "async": "^2.0.0-rc.4",
+    "chart.js": "^2.1.2",
     "compression": "^1.6.1",
     "express": "^4.13.4",
+    "jquery": "^2.2.3",
     "network-calculator": "^1.2.0",
     "node-arp": "^1.0.5"
   }
