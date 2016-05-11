@@ -1,0 +1,24 @@
+{
+  "name": "network-stats",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lunik/network-stats.git"
+  },
+  "author": "lunik <guillaume.lunik@gmail.com> (http://lunik.xyz)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lunik/network-stats/issues"
+  },
+  "homepage": "https://github.com/Lunik/network-stats#readme",
+  "dependencies": {
+    "async": "^2.0.0-rc.4",
+    "network-calculator": "^1.2.0",
+    "node-arp": "^1.0.5"
+  }
+}
