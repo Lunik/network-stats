@@ -1,52 +1,55 @@
 var fs = require('fs')
+var os = require('os')
+var nc = require('network-calculator')
 
 var ns = require('./NetworkTool.js')
 
-function NetworkStats (ip, mask) {
-  var self = this
-  this.network = ip
-  this.mask = mask
-  this.interval = null
-  this.data = null
-  fs.readFile(__dirname + '/db-' + this.network + '.json', function (err, file) {
-    if (err) console.log(err)
+var ips = getAllInterfaces()
+for (key in ips) {
+  setInterval(function () {
+    console.log('Scan: '+ nc(ips[key][0], ips[key][1]).network)
 
-    self.data = JSON.pars(file)
+    startScan(ips[key][0], ips[key][1])
+  }, 60000)
+}
+
+function startScan (network, mask) {
+  ns(network, mask, function (data) {
+    fs.readFile(__dirname + '/db.json', function (err, file) {
+      if (err) console.log(err)
+
+      stats = JSON.parse(file)
+
+      for (var key in data) {
+        var device = data[key]
+        if (typeof stats[device.mac] === 'undefined') {
+          stats[device.mac] = { name: 'none', ip: {} }
+        }
+        if (typeof stats[device.mac].ip === 'undefined') {
+          stats[device.mac] = {}
+        }
+        if (typeof stats[device.mac].ip[device.ip] === 'undefined') {
+          stats[device.mac].ip[device.ip] = []
+        }
+        stats[device.mac].ip[device.ip].push((new Date()).getTime())
+      }
+      fs.writeFile(__dirname + '/db.json', JSON.stringify(stats), function (err) {
+        if (err) console.log(err)
+      })
+    })
   })
 }
 
-NetworkStats.prototype.start = function () {
-  this.interval = setInterval(this.scan, 1000)
-}
-
-NetworkStats.prototype.stop = function () {
-  clearInterval(this.interval)
-}
-
-NetworkStats.prototype.save = function(){
-  var self = this
-  fs.writeFile(__dirname + '/db.json', JSON.stringify(self.data, null, 2), function (err) {
-    if (err) console.log(err)
-  })
-}
-
-NetworkStats.prototype.scan = function () {
-  var self = this
-  ns(this.network, this.mask, function (data) {
-    for (var key in data) {
-      var device = data[key]
-      if (typeof self.data[device.mac] === 'undefined') {
-        self.data[device.mac] = { name: 'none', ip: {} }
+function getAllInterfaces () {
+  var interfaces = os.networkInterfaces()
+  var addresses = []
+  for (var k in interfaces) {
+    for (var k2 in interfaces[k]) {
+      var address = interfaces[k][k2]
+      if (address.family === 'IPv4' && !address.internal) {
+        addresses.push([address.address, address.netmask])
       }
-      if (typeof self.data[device.mac].ip === 'undefined') {
-        self.data[device.mac] = {}
-      }
-      if (typeof self.data[device.mac].ip[device.ip] === 'undefined') {
-        self.data[device.mac].ip[device.ip] = []
-      }
-      self.data[device.mac].ip[device.ip].push((new Date()).getTime())
     }
-  })
+  }
+  return addresses
 }
-
-module.exports = NetworkStats
