@@ -28,6 +28,10 @@
       $.each(value.ip, function (key, ip) {
         // ip = ip.slice(ip.length - 20, ip.length)
         $.each(ip, function (key, timestap) {
+          var date = new Date(timestap)
+          date.setSeconds(0)
+          date.setMilliseconds(0)
+          timestap = date.getTime()
           var index = data.labelsIndex.indexOf(timestap)
           if (index === -1) {
             data.labels.push(formatDate(timestap))
