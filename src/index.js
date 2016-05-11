@@ -32,3 +32,5 @@ NetworkStats.prototype.scan = function () {
     })
   })
 }
+
+module.exports = NetworkStats
