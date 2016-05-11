@@ -1,6 +1,6 @@
 var fs = require('fs')
 
-var ns = require('./NetworkStats.js')
+var ns = require('./NetworkTool.js')
 
 ns('192.168.1.0', '255.255.255.0', function(data){
   fs.readFile(__dirname+'/db.json', function(err, file){
@@ -25,3 +25,5 @@ ns('192.168.1.0', '255.255.255.0', function(data){
     })
   })
 })
+
+function
