@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "cp src/db.default src/db.json",
+    "install": "if ! [ -f src/db.json ]; then cp src/db.default src/db.json; fi",
     "start": "node src/index.js",
     "scrape": "forever node src/NetworkStats.js"
   },
