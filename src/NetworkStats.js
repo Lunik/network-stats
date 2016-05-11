@@ -19,7 +19,7 @@ NetworkStats.prototype.start = function () {
   this.interval = setInterval(this.scan, 1000)
 }
 
-NetworkStats.prototype.start = function () {
+NetworkStats.prototype.stop = function () {
   clearInterval(this.interval)
 }
 
