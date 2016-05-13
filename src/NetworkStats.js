@@ -10,7 +10,7 @@ for (key in ips) {
     console.log('Scan: '+ nc(ips[key][0], ips[key][1]).network)
 
     startScan(ips[key][0], ips[key][1])
-  }, 600000)
+  }, 300000)
 }
 
 function startScan (network, mask) {
