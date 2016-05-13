@@ -1,14 +1,21 @@
-;(function () {
+$(window).on('hashchange', function(){
+  var hash = window.location.hash.slice(1) || 50
+  genereChart(hash)
+})
+$(window).ready(function(){
+  var hash = window.location.hash.slice(1) || 50
+  genereChart(hash)
+})
+
+function genereChart (valueNumber){
+
   $.getJSON('/db.json', function (database) {
     var days = getLastDays(7)
 
     var data = {
       labels: [],
       labelsIndex: [],
-      datasets: [{
-        label: 'MaxScale',
-        data: []
-      }]
+      datasets: []
     }
 
     var ecartement = 0
@@ -43,11 +50,13 @@
           dset.data[index] = 1 + ecartement
         })
       })
+      dset.data = dset.data.slice(dset.data.length - valueNumber)
 
       data.datasets.push(dset)
       ecartement += 3
     })
 
+    data.labels = data.labels.slice(data.labels.length - valueNumber)
 
     var ctx = $('#chart')
 
@@ -55,25 +64,6 @@
       type: 'line',
       data: data
     })
-
-    var range = $('#range')
-    range.attr('max', data.labels.length)
-
-    range.on('change', function(){
-      var value = $(this).val()
-
-      var newData = $.extend({}, data)
-      newData.labels = newData.labels.slice(newData.labels.length - value)
-
-      myBarChart.destroy()
-      myBarChart = new Chart(ctx, {
-        type: 'line',
-        data: newData
-      })
-      console.log(data.labels)
-    })
-
-
   })
 
   function getLastDays (nb) {
@@ -122,4 +112,4 @@
   function getColor (string) {
     return intToRGB(string.hashCode())
   }
-})()
+}
