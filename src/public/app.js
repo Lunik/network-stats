@@ -9,7 +9,8 @@ $(window).ready(function () {
 
 function genereChart (valueNumber) {
   $('#chart').html("")
-  
+
+  //Load database
   $.getJSON('/db.json', function (database) {
     var days = getLastDays(7)
 
@@ -20,6 +21,7 @@ function genereChart (valueNumber) {
     }
 
     var ecartement = 0
+    // For each mac adresse
     $.each(database, function (key, value) {
       var color = '#' + getColor(value.name)
       var dset = {
@@ -33,6 +35,7 @@ function genereChart (valueNumber) {
         data: []
       }
 
+      // generate labels
       $.each(value.ip, function (key, ip) {
         // ip = ip.slice(ip.length - 20, ip.length)
         $.each(ip, function (key, timestap) {
@@ -48,8 +51,10 @@ function genereChart (valueNumber) {
         })
       })
 
+      //keep the les n derniers labels
       data.labels = data.labels.slice(data.labels.length - valueNumber)
 
+      // generate plot
       $.each(value.ip, function (key, ip) {
         // ip = ip.slice(ip.length - 20, ip.length)
         $.each(ip, function (key, timestap) {
@@ -64,12 +69,14 @@ function genereChart (valueNumber) {
         })
       })
 
+      //keep the last n element
       dset.data = dset.data.slice(dset.data.length - valueNumber)
 
       data.datasets.push(dset)
       ecartement += 3
     })
 
+    //formatDate
     for (var key in data.labels) {
       data.labels[key] = formatDate(data.labels[key])
     }
