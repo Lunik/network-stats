@@ -1,14 +1,15 @@
-$(window).on('hashchange', function(){
+$(window).on('hashchange', function () {
   var hash = window.location.hash.slice(1) || 50
   genereChart(hash)
 })
-$(window).ready(function(){
+$(window).ready(function () {
   var hash = window.location.hash.slice(1) || 50
   genereChart(hash)
 })
 
-function genereChart (valueNumber){
-
+function genereChart (valueNumber) {
+  $('#chart').html("")
+  
   $.getJSON('/db.json', function (database) {
     var days = getLastDays(7)
 
@@ -43,20 +44,33 @@ function genereChart (valueNumber){
           if (index === -1) {
             data.labels.push(timestap)
             data.labels.sort()
-            index = data.labels.indexOf(timestap)
           }
-          dset.data[index] = 1 + ecartement
         })
       })
+
+      data.labels = data.labels.slice(data.labels.length - valueNumber)
+
+      $.each(value.ip, function (key, ip) {
+        // ip = ip.slice(ip.length - 20, ip.length)
+        $.each(ip, function (key, timestap) {
+          var date = new Date(timestap)
+          date.setSeconds(0)
+          date.setMilliseconds(0)
+          timestap = date.getTime()
+          var index = data.labels.indexOf(timestap)
+          if (index !== -1) {
+            dset.data[index] = 1 + ecartement
+          }
+        })
+      })
+
       dset.data = dset.data.slice(dset.data.length - valueNumber)
 
       data.datasets.push(dset)
       ecartement += 3
     })
 
-    data.labels = data.labels.slice(data.labels.length - valueNumber)
-
-    for(var key in data.labels){
+    for (var key in data.labels) {
       data.labels[key] = formatDate(data.labels[key])
     }
 
@@ -95,7 +109,7 @@ function genereChart (valueNumber){
   String.prototype.hashCode = function () {
     var hash = 0, i, chr, len
     if (this.length === 0) return hash
-    for (i = this.length/5, len = this.length; i < len; i++) {
+    for (i = this.length / 5, len = this.length; i < len; i++) {
       chr = this.charCodeAt(i)
       hash = ((hash << 5) - hash) + chr
       hash |= 0 // Convert to 32bit integer
