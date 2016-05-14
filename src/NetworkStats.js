@@ -1,41 +1,47 @@
 var fs = require('fs')
 var os = require('os')
 var nc = require('network-calculator')
+var dns = require('dns')
 
 var ns = require('./NetworkTool.js')
 
+var STATS = {}
+
+fs.readFile(__dirname + '/db.json', function (err, file) {
+  if (err) console.log(err)
+
+  STATS = JSON.parse(file)
+})
 var ips = getAllInterfaces()
 for (key in ips) {
   setInterval(function () {
     console.log('Scan: '+ nc(ips[key][0], ips[key][1]).network)
 
     startScan(ips[key][0], ips[key][1])
-  }, 300000)
+  }, 60000)
+
+  setInterval(function () {
+    fs.writeFile(__dirname + '/db.json', JSON.stringify(STATS), function (err) {
+      if (err) console.log(err)
+    })
+  }, 1000)
 }
 
 function startScan (network, mask) {
   ns(network, mask, function (data) {
-    fs.readFile(__dirname + '/db.json', function (err, file) {
-      if (err) console.log(err)
-
-      stats = JSON.parse(file)
-
-      for (var key in data) {
-        var device = data[key]
-        if (typeof stats[device.mac] === 'undefined') {
-          stats[device.mac] = { name: 'none', ip: {} }
+    data.forEach(function (device, index) {
+      dns.lookupService(device.ip, '80', function (err, hostname) {
+        if (typeof STATS[device.mac] === 'undefined') {
+          STATS[device.mac] = { name: hostname, ip: {} }
         }
-        if (typeof stats[device.mac].ip === 'undefined') {
-          stats[device.mac] = {}
+        if (typeof STATS[device.mac].ip === 'undefined') {
+          STATS[device.mac] = {}
         }
-        if (typeof stats[device.mac].ip[device.ip] === 'undefined') {
-          stats[device.mac].ip[device.ip] = []
+        if (typeof STATS[device.mac].ip[device.ip] === 'undefined') {
+          STATS[device.mac].ip[device.ip] = []
         }
-        stats[device.mac].ip[device.ip].push((new Date()).getTime())
-        stats[device.mac].ip[device.ip].slice(stats[device.mac].ip[device.ip].length - 1024)
-      }
-      fs.writeFile(__dirname + '/db.json', JSON.stringify(stats), function (err) {
-        if (err) console.log(err)
+        STATS[device.mac].ip[device.ip].push((new Date()).getTime())
+        STATS[device.mac].ip[device.ip].slice(STATS[device.mac].ip[device.ip].length - 1024)
       })
     })
   })
