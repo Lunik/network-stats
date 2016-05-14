@@ -39,13 +39,11 @@ function genereChart (valueNumber){
           date.setSeconds(0)
           date.setMilliseconds(0)
           timestap = date.getTime()
-          var index = data.labelsIndex.indexOf(timestap)
+          var index = data.labels.indexOf(timestap)
           if (index === -1) {
-            data.labels.push(formatDate(timestap))
+            data.labels.push(timestap)
             data.labels.sort()
-            data.labelsIndex.push(timestap)
-            data.labelsIndex.sort()
-            index = data.labelsIndex.indexOf(timestap)
+            index = data.labels.indexOf(timestap)
           }
           dset.data[index] = 1 + ecartement
         })
@@ -57,6 +55,10 @@ function genereChart (valueNumber){
     })
 
     data.labels = data.labels.slice(data.labels.length - valueNumber)
+
+    for(var key in data.labels){
+      data.labels[key] = formatDate(data.labels[key])
+    }
 
     var ctx = $('#chart')
 
