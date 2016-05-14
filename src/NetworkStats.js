@@ -18,7 +18,7 @@ for (key in ips) {
     console.log('Scan: '+ nc(ips[key][0], ips[key][1]).network)
 
     startScan(ips[key][0], ips[key][1])
-  }, 60000)
+  }, 300000)
 
   setInterval(function () {
     fs.writeFile(__dirname + '/db.json', JSON.stringify(STATS), function (err) {
