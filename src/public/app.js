@@ -51,8 +51,7 @@ function genereChart (valueNumber) {
         })
       })
 
-      //keep the les n derniers labels
-      data.labels = data.labels.slice(data.labels.length - valueNumber)
+
 
       // generate plot
       $.each(value.ip, function (key, ip) {
@@ -68,13 +67,18 @@ function genereChart (valueNumber) {
           }
         })
       })
-
       //keep the last n element
-      dset.data = dset.data.slice(dset.data.length - valueNumber)
-
+      var slice = dset.data.length - valueNumber
+      slice = slice < 0 ? 0 : slice
+      dset.data = dset.data.slice(slice)
       data.datasets.push(dset)
       ecartement += 3
     })
+
+    //keep the les n derniers labels
+    var slice = data.labels.length - valueNumber
+    slice = slice < 0 ? 0 : slice
+    data.labels = data.labels.slice(slice)
 
     //formatDate
     for (var key in data.labels) {
