@@ -24,7 +24,7 @@ for (key in ips) {
     fs.writeFile(__dirname + '/db.json', JSON.stringify(STATS), function (err) {
       if (err) console.log(err)
     })
-  }, 1000)
+  }, 150000)
 }
 
 function startScan (network, mask) {
