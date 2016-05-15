@@ -32,7 +32,7 @@ function startScan (network, mask) {
     data.forEach(function (device, index) {
       dns.lookupService(device.ip, '80', function (err, hostname) {
         if (typeof STATS[device.mac] === 'undefined') {
-          STATS[device.mac] = { name: hostname, ip: {} }
+          STATS[device.mac] = { name: hostname || 'none', ip: {} }
         }
         if (typeof STATS[device.mac].ip === 'undefined') {
           STATS[device.mac] = {}
