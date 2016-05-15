@@ -12,7 +12,6 @@ function genereChart (valueNumber) {
 
   //Load database
   $.getJSON('/db.json', function (database) {
-    var days = getLastDays(7)
 
     var data = {
       labels: [],
