@@ -7,6 +7,10 @@ $(window).ready(function () {
   genereChart(hash)
 })
 
+setTimeout(function(){
+  location.reload()
+}, 150000)
+
 function genereChart (valueNumber) {
   $('#chart').html("")
 
