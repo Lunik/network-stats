@@ -22,7 +22,7 @@
   "homepage": "https://github.com/Lunik/network-stats#readme",
   "dependencies": {
     "async": "^2.0.0-rc.4",
-    "chart.js": "^2.1.2",
+    "chart.js": "^2.5.0",
     "compression": "^1.6.1",
     "express": "^4.13.4",
     "jquery": "^3.1.1",
